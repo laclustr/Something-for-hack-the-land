@@ -1,5 +1,6 @@
 import pygame
 from utils.config import *
+from utils.inputmanager import *
 from states.state_machine import StateMachine
 
 def main():
@@ -12,13 +13,7 @@ def main():
 
     running = True
     while running:
-        keysdown = set()
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.KEYDOWN:
-                keysdown.add(event.key)
+        keysdown = getKeysDown()
 
         dt = clock.tick(60)
         state_machine.update(keysdown, dt)
