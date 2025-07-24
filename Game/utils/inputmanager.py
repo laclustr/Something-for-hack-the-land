@@ -11,17 +11,18 @@ def getKeysDown():
     keysdown = set()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            return pygame.QUIT
         if event.type == pygame.KEYDOWN:
             keysdown.add(event.key)
 
     if ser and ser.in_waiting > 0:
         try:
             line = ser.readline().decode('utf-8').strip()
+            print(line)
             if line == "SPACE":
                 keysdown.add(pygame.K_SPACE)
             if line == "UP":
-                keysdown.add(pygame.K_UP)
+                keysdown.add(pygame.K_TAB)
         except Exception as e:
             print(f"[Serial Read Error] {e}")
 

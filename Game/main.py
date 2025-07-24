@@ -14,6 +14,8 @@ def main():
     running = True
     while running:
         keysdown = getKeysDown()
+        if keysdown == pygame.QUIT:
+            running = False
 
         dt = clock.tick(60)
         state_machine.update(keysdown, dt)
