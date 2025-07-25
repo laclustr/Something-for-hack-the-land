@@ -21,9 +21,6 @@ LIS3DHTR<TwoWire> LIS;
 BMP280 bmp280;
 Ultrasonic ultrasonic(ultrasonicPin);
 
-// Sensitivity
-const int sensitivity = 3;
-
 // Functions
 void initPins();
 void initLIS();

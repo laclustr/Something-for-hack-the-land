@@ -1,10 +1,21 @@
 import pygame
 pygame.mixer.init()
 
-# Controls
+# Keybinds
 SHAKE_BUTTON = pygame.K_SPACE
 BUTTON_BUTTON = pygame.K_RETURN
 CLAP_BUTTON = pygame.K_SPACE
+
+# Controls
+CLAP_ENABLED = True
+SHAKE_ENABLED = True
+BUTTON_ENABLED = True
+LIGHT_ENABLED = True
+DISTANCE_ENABLED = True
+DIAL_ENABLED = True
+TEMPERATURE_ENABLED = True
+PRESSURE_ENABLED = True
+USE_DISTANCE = False  # Use distance sensor for opacity adjustment; set to False to use light sensor instead
 
 # Surroundings
 BASE_PRESSURE = 99485
@@ -12,7 +23,6 @@ BASE_LIGHT = 767
 BASE_TEMP = 20
 BASE_DISTANCE = 40
 ROTARY_SCALE = 100
-USE_DISTANCE = True  # Use distance sensor for opacity adjustment; set to False to use light sensor instead
 
 # Display
 SCREEN_WIDTH = 640
@@ -56,7 +66,7 @@ SERIAL_TIMEOUT = 0.01
 LIS_X_SENSITIVITY = 3
 LIS_Y_SENSITIVITY = 3
 LIS_Z_SENSITIVITY = 3
-SOUND_SENSITIVITY = 650
+SOUND_SENSITIVITY = 450
 
 # Bird
 BIRD_RADIUS = 16
