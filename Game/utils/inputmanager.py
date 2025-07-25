@@ -1,8 +1,11 @@
 import serial
 import pygame
+import json
+import time
+from .parseData import parseKeyData
 
 try:
-    ser = serial.Serial('/dev/tty.usbserial-0001', 9600)
+    ser = serial.Serial('/dev/tty.usbserial-0001', 115200, timeout=0.01)
 except Exception as e:
     print(f"Could not connect to Arduino: {e}")
     ser = None
@@ -18,11 +21,9 @@ def getKeysDown():
     if ser and ser.in_waiting > 0:
         try:
             line = ser.readline().decode('utf-8').strip()
-            print(line)
-            if line == "SPACE":
-                keysdown.add(pygame.K_SPACE)
-            if line == "UP":
-                keysdown.add(pygame.K_TAB)
+            data = json.loads(line)
+            print(data)
+            keysdown.update(parseKeyData(data))
         except Exception as e:
             print(f"[Serial Read Error] {e}")
 

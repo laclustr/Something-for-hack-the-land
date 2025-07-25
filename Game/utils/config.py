@@ -1,6 +1,11 @@
 import pygame
 pygame.mixer.init()
 
+# Controls
+SHAKE_BUTTON = pygame.K_SPACE
+BUTTON_BUTTON = pygame.K_SPACE
+CLAP_BUTTON = pygame.K_SPACE
+
 # Display
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
@@ -24,6 +29,12 @@ MAX_MIN_HEIGHT = 100
 PIPE_OFFSET = 100
 PIPE_TOP_OFFSET = 340
 PIPE_SPACING = 1750 # in ms
+
+# Control Sensitivity
+LIS_X_SENSITIVITY = 3
+LIS_Y_SENSITIVITY = 3
+LIS_Z_SENSITIVITY = 3
+SOUND_SENSITIVITY = 650
 
 # Bird
 BIRD_RADIUS = 16

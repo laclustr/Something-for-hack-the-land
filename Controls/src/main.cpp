@@ -1,68 +1,95 @@
 #include <Arduino.h>
+#include <ArduinoJson.h>
+#include <Wire.h>
+
 #include "LIS3DHTR.h"
-#ifdef SOFTWAREWIRE
-    #include <SoftwareWire.h>
-    SoftwareWire myWire(3, 2);
-    LIS3DHTR<SoftwareWire> LIS;
-    #define WIRE myWire
-#else
-    #include <Wire.h>
-    LIS3DHTR<TwoWire> LIS;
-    #define WIRE Wire
-#endif
+#include "Seeed_BMP280.h"
+#include "Ultrasonic.h"
 
-const int sensitivity = 3;
+#define WIRE Wire
 
+// Pins
 const int buttonPin = 6;
 const int ledPin = 4;
 const int soundPin = A2;
+const int sensorPin = A6;
+const int rotaryPin = A0; 
+const int ultrasonicPin = 2;
+
+// Object Instantiation
+LIS3DHTR<TwoWire> LIS;
+BMP280 bmp280;
+Ultrasonic ultrasonic(ultrasonicPin);
+
+// Sensitivity
+const int sensitivity = 3;
+
+// Sensor Values
+int sensorValue = 0;
 int buttonState = 0;
 int soundState = 0;
+int rotaryValue = 0;
+
+// Functions
+void initPins();
+void initLIS();
+void readAndSendJSON();
 
 void setup() {
+  Serial.begin(115200);
+  
+  initPins();
+  initLIS();
+
+  if (!bmp280.init()) {
+    Serial.println("Device not connected or broken!");
+  }
+}
+
+void loop() {
+  readAndSendJSON();
+  delay(10);
+}
+
+void initPins() {
   pinMode(buttonPin, INPUT_PULLUP);
   pinMode(ledPin, OUTPUT);
   pinMode(soundPin, INPUT);
-  Serial.begin(9600);
+  pinMode(sensorPin, INPUT);
+  pinMode(rotaryPin, INPUT);
+}
 
+void initLIS() {
   while (!Serial) {};
   LIS.begin(WIRE, 0x19);
   delay(100);
   LIS.setOutputDataRate(LIS3DHTR_DATARATE_50HZ);
 }
 
-void loop() {
-  if (!LIS) {
-    Serial.println("LIS3DHTR didn't connect.");
-    while (1);
-    return;
-  }
+void readAndSendJSON() {
+  StaticJsonDocument<256> doc;
+  float pressure;
 
-  int x = LIS.getAccelerationX();
-  int y = LIS.getAccelerationY();
-  int z = LIS.getAccelerationZ();
-  if (x >= 3 || y >= 3 || z >= 3) {
-    Serial.println("x: " + String(x) + " y: " + String(y) + " z: " + String(z));
-  }
-  if (x >= 3 || y >= 3 || z >= 3 || x <= -3 || y <= -3 || z <= -3) {
-    Serial.println("UP");
-    delay(100);
-  }
+  doc["LIS"]["x"] = LIS.getAccelerationX();
+  doc["LIS"]["y"] = LIS.getAccelerationY();
+  doc["LIS"]["z"] = LIS.getAccelerationZ();
 
-  buttonState = digitalRead(buttonPin);
-  soundState = analogRead(soundPin);
+  doc["Light"] = analogRead(sensorPin);
 
-  if (soundState > 600) {
-    digitalWrite(ledPin, HIGH);
-    Serial.println("SPACE");
-    delay(100);
-  }
-  if (buttonState == HIGH) {
-    Serial.println("UP");
-    delay(100);
-  }
-  if (soundState < 600 && buttonState == LOW) {
-    digitalWrite(ledPin, LOW);
+  doc["Button"] = digitalRead(buttonPin) == HIGH ? true : false;
 
-  }
+  doc["Sound"] = analogRead(soundPin);
+
+  doc["Rotary"] = analogRead(rotaryPin);
+
+  doc["Temp"] = bmp280.getTemperature();
+  
+  doc["Pressure"] = pressure = bmp280.getPressure();
+
+  doc["Altitude"] = bmp280.calcAltitude(pressure);
+
+  doc["Distance"] = ultrasonic.MeasureInCentimeters();
+
+  serializeJson(doc, Serial);
+  Serial.println();
 }
