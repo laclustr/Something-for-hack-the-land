@@ -33,7 +33,19 @@ def main():
 
         pygame.display.flip()
 
-    pygame.quit()
+    try:
+        print("Quitting...")
+
+        state_machine.ser.close()
+        print("Serial closed")
+
+        print("Exiting...")
+        pygame.quit()
+    except:
+        print("Error during quit process. Exiting...")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except:
+        pass
