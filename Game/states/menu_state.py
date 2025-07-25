@@ -41,7 +41,7 @@ class MenuState:
 
         self.state_machine.font.set_color(WHITE)
         self.state_machine.font.set_size(80)
-        self.state_machine.font.print(self.state_machine.screen, f"FLAPPY BIRD", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 8)
+        self.state_machine.font.print(self.state_machine.screen, f"SLAPPY BIRD", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 8)
 
         self.state_machine.font.set_size(45)
         self.state_machine.font.set_color(BLUE) if self.sel_option == "1 PLAYER" else self.state_machine.font.set_color(WHITE)
