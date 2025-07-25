@@ -4,7 +4,7 @@ import pygame
 class Bird:
     def __init__(self, playernum):
         self.player_num = playernum
-        self.image = pygame.image.load("assets/sprites/gameplay/bluebird-downflap.png").convert() if playernum == 1 else pygame.image.load("assets/sprites/gameplay/redbird-downflap.png").convert()
+        self.image = pygame.image.load(PLAYER_ONE_BIRD).convert() if playernum == 1 else pygame.image.load(PLAYER_TWO_BIRD).convert()
         self.rect = self.image.get_rect()
         self.rect.x = SCREEN_WIDTH // 3
         self.rect.y = SCREEN_HEIGHT // 2 - playernum * 25
@@ -17,7 +17,8 @@ class Bird:
         JUMP_FX.play()
         self.velocity = -JUMP_HEIGHT
 
-    def update(self, dt, keys):
+    def update(self, dt, keys, gravity):
+        self.gravity = gravity
         self.velocity += self.gravity
         self.rect.y += self.velocity * dt
         if pygame.K_SPACE in keys and self.player_num == 1: self._jump()

@@ -16,8 +16,8 @@ class CountdownState:
             self.state_machine.change_state("playing")
         if pygame.K_SPACE in self.state_machine.keysdown or (self.state_machine.bird2 and pygame.K_TAB in self.state_machine.keysdown):
             self.state_machine.change_state("playing")
-            self.state_machine.bird1.update(dt, self.state_machine.keysdown)
-            if self.state_machine.bird2: self.state_machine.bird2.update(dt, self.state_machine.keysdown)
+            self.state_machine.bird1.update(dt, self.state_machine.keysdown, self.state_machine.gravity)
+            if self.state_machine.bird2: self.state_machine.bird2.update(dt, self.state_machine.keysdown, self.state_machine.gravity)
 
         if pygame.K_ESCAPE in self.state_machine.keysdown:
             self.state_machine.change_state("menu")

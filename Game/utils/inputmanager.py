@@ -1,16 +1,10 @@
-import serial
 import pygame
 import json
-import time
+from .config import *
 from .parseData import parseKeyData
+from .connect_serial import connect_serial
 
-try:
-    ser = serial.Serial('/dev/tty.usbserial-0001', 115200, timeout=0.01)
-except Exception as e:
-    print(f"Could not connect to Arduino: {e}")
-    ser = None
-
-def getKeysDown():
+def getKeysDown(state_machine):
     keysdown = set()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -18,13 +12,20 @@ def getKeysDown():
         if event.type == pygame.KEYDOWN:
             keysdown.add(event.key)
 
-    if ser and ser.in_waiting > 0:
-        try:
-            line = ser.readline().decode('utf-8').strip()
-            data = json.loads(line)
-            print(data)
-            keysdown.update(parseKeyData(data))
-        except Exception as e:
-            print(f"[Serial Read Error] {e}")
+    ser = state_machine.ser
+    try:
+        if not ser:
+            raise OSError("Serial connection not established.")
+        if ser.in_waiting > 0:
+            try:
+                line = ser.readline().decode('utf-8').strip()
+                data = json.loads(line)
+                # print(data)
+                keysdown.update(parseKeyData(data, state_machine))
+            except Exception as e:
+                print(f"[Serial Read Error] {e}")
+    except OSError as e:
+        print(f"[Serial Connection Error] {e}\nRetrying...")
+        connect_serial(SERIAL_PORT, SERIAL_BAUD, SERIAL_TIMEOUT, state_machine)
 
     return keysdown

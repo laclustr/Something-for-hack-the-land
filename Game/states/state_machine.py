@@ -5,17 +5,34 @@ from .menu_state import *
 from .pause_state import *
 from .play_state import *
 from objects.Bird import Bird
+from utils.create_vignette import create_vignette_surface
 
 
 class StateMachine:
-    def __init__(self, screen):
+    def __init__(self, screen, overlay, vignette):
         self.screen = screen
+        self.overlay = overlay
+        self.vignette = vignette
+
         self.keysdown = set()
 
         self.bird1 = Bird(1)
         self.bird2 = None
 
-        self.background = pygame.transform.scale(pygame.image.load("assets/sprites/gameplay/background-day.png").convert(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.ser = None
+
+        self.speed = SCROLL_SPEED
+        self.opacity = 255 - MAX_OPACITY
+        self.gravity = BIRD_GRAVITY
+        self.vignette_strength = VIGNETTE_STRENGTH
+
+        self.facets = {
+            "shake": False,
+            "button": False,
+            "clap": False
+        }
+
+        self.background = pygame.transform.scale(pygame.image.load(BACKGROUND_PATH).convert(), (SCREEN_WIDTH, SCREEN_HEIGHT))
         self.background_pos = 0
         self.bg_is_moving = True
 
@@ -45,10 +62,14 @@ class StateMachine:
 
     def update(self, keysdown, dt):
         self.keysdown = keysdown
+        self.overlay.set_alpha(self.opacity)
+        self.vignette = create_vignette_surface(self.vignette_strength)
         self.curr_state.update(dt)
 
     def draw(self):
         self.curr_state.draw()
+        self.screen.blit(self.overlay, (0, 0))
+        self.screen.blit(self.vignette, (0, 0))
 
     def two_player(self):
         self.bird1 = Bird(1)

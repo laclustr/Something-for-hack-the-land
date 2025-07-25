@@ -49,9 +49,9 @@ class LoserState:
 
         if self.animation_time > 0:
             self.animation_time -= SCROLL_SPEED_SLOWER * dt * 4
-            self.state_machine.bird1.update(dt, set())
+            self.state_machine.bird1.update(dt, set(), self.state_machine.gravity)
             if self.state_machine.bird2:
-                self.state_machine.bird2.update(dt, set())
+                self.state_machine.bird2.update(dt, set(), self.state_machine.gravity)
 
         if self.animation_time < 0:
             if pygame.K_DOWN in self.state_machine.keysdown:

@@ -6,10 +6,10 @@ class PlayState:
         self.state_machine = state_machine
 
     def update(self, dt):
-        self.state_machine.last_pipe_gen += dt
+        self.state_machine.last_pipe_gen += dt * (self.state_machine.speed)
         if self.state_machine.last_pipe_gen >= PIPE_SPACING:
             self.state_machine.last_pipe_gen = 0
-            self.state_machine.pipe_list.append(PipePair())
+            self.state_machine.pipe_list.append(PipePair(self.state_machine.speed))
 
         if pygame.K_p in self.state_machine.keysdown:
             self.state_machine.change_state("paused")
@@ -50,16 +50,16 @@ class PlayState:
                 self.state_machine.bird1.score += 1
             if self.state_machine.bird2 and pipe.bird_passed(self.state_machine.bird2):
                 self.state_machine.bird2.score += 1
-            pipe.update(dt)
+            pipe.update(dt, self.state_machine.speed)
 
         if self.state_machine.bg_is_moving:
             self.state_machine.background_pos -= (SCROLL_SPEED * (dt // 5))
             if self.state_machine.background_pos <= -self.state_machine.background.width:
                 self.state_machine.background_pos += self.state_machine.background.width
 
-        self.state_machine.bird1.update(dt, self.state_machine.keysdown)
+        self.state_machine.bird1.update(dt, self.state_machine.keysdown, self.state_machine.gravity)
         if self.state_machine.bird2:
-            self.state_machine.bird2.update(dt, self.state_machine.keysdown)
+            self.state_machine.bird2.update(dt, self.state_machine.keysdown, self.state_machine.gravity)
 
     def draw(self):
         self.state_machine.screen.blit(self.state_machine.background, (self.state_machine.background_pos, 0))

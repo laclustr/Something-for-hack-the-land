@@ -1,20 +1,19 @@
 from utils.config import *
 from .pipe import Pipe
 import random
-import pygame
 
 class PipePair:
-    def __init__(self):
+    def __init__(self, speed):
         gap = int(MIN_PIPE_DIST * random.uniform(1, 1.15))
         random_height = random.randint(MAX_MIN_HEIGHT + 50, SCREEN_HEIGHT - MAX_MIN_HEIGHT - gap)
         random_height -= random.randint(-100, 100)
-        self.top_pipe = Pipe(SCREEN_WIDTH + PIPE_OFFSET, random_height - PIPE_TOP_OFFSET, "top")
-        self.btm_pipe = Pipe(SCREEN_WIDTH + PIPE_OFFSET, random_height + gap, "btm")
+        self.top_pipe = Pipe(SCREEN_WIDTH + PIPE_OFFSET, random_height - PIPE_TOP_OFFSET, "top", speed)
+        self.btm_pipe = Pipe(SCREEN_WIDTH + PIPE_OFFSET, random_height + gap, "btm", speed)
         self.passed_through = False
 
-    def update(self, dt):
-        self.top_pipe.update(dt)
-        self.btm_pipe.update(dt)
+    def update(self, dt, speed):
+        self.top_pipe.update(dt, speed)
+        self.btm_pipe.update(dt, speed)
 
     def time_up(self):
         return self.top_pipe.rect.right <= 0
