@@ -1,4 +1,4 @@
-Welcome to Wacky-Bird, a cool twist on one of your favorite games. Adding a multitude of sensors, you can make it feel like you're playing the game in real life.
+Welcome to Slappy-Bird, a cool twist on one of your favorite games. Adding a multitude of sensors, you can make it feel like you're playing the game in real life.
 
 Configure the following ports on your arduino:
 ```
