@@ -12,7 +12,7 @@
 const int buttonPin = 6;
 const int ledPin = 4;
 const int soundPin = A2;
-const int sensorPin = A6;
+const int lightSensorPin = A6;
 const int rotaryPin = A0; 
 const int ultrasonicPin = 2;
 
@@ -23,12 +23,6 @@ Ultrasonic ultrasonic(ultrasonicPin);
 
 // Sensitivity
 const int sensitivity = 3;
-
-// Sensor Values
-int sensorValue = 0;
-int buttonState = 0;
-int soundState = 0;
-int rotaryValue = 0;
 
 // Functions
 void initPins();
@@ -55,7 +49,7 @@ void initPins() {
   pinMode(buttonPin, INPUT_PULLUP);
   pinMode(ledPin, OUTPUT);
   pinMode(soundPin, INPUT);
-  pinMode(sensorPin, INPUT);
+  pinMode(lightSensorPin, INPUT);
   pinMode(rotaryPin, INPUT);
 }
 
@@ -74,7 +68,7 @@ void readAndSendJSON() {
   doc["LIS"]["y"] = LIS.getAccelerationY();
   doc["LIS"]["z"] = LIS.getAccelerationZ();
 
-  doc["Light"] = analogRead(sensorPin);
+  doc["Light"] = analogRead(lightSensorPin);
 
   doc["Button"] = digitalRead(buttonPin) == HIGH ? true : false;
 

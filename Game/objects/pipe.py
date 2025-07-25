@@ -4,9 +4,9 @@ import pygame
 class Pipe:
     def __init__(self, x, y, typ, speed):
         if typ == "btm":
-            self.image = pygame.image.load(PIPE_PATH).convert()
+            self.image = pygame.image.load(PIPE_PATH).convert_alpha()
         elif typ == "top":
-            img = pygame.image.load(PIPE_PATH).convert()
+            img = pygame.image.load(PIPE_PATH).convert_alpha()
             self.image = pygame.transform.flip(img, False, True)
         self.image = pygame.transform.scale(self.image, (self.image.width, self.image.height * 1.2))
         self.rect = self.image.get_rect()

@@ -20,7 +20,7 @@ def getKeysDown(state_machine):
             try:
                 line = ser.readline().decode('utf-8').strip()
                 data = json.loads(line)
-                # print(data)
+                print(data)
                 keysdown.update(parseKeyData(data, state_machine))
             except Exception as e:
                 print(f"[Serial Read Error] {e}")

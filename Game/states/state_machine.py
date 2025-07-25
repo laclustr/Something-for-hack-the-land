@@ -69,7 +69,7 @@ class StateMachine:
     def draw(self):
         self.curr_state.draw()
         self.screen.blit(self.overlay, (0, 0))
-        self.screen.blit(self.vignette, (0, 0))
+        #self.screen.blit(self.vignette, (0, 0))
 
     def two_player(self):
         self.bird1 = Bird(1)

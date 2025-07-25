@@ -33,19 +33,16 @@ def main():
 
         pygame.display.flip()
 
-    try:
-        print("Quitting...")
+    state_machine.ser.close()
+    print("Serial closed")
 
-        state_machine.ser.close()
-        print("Serial closed")
-
-        print("Exiting...")
-        pygame.quit()
-    except:
-        print("Error during quit process. Exiting...")
+    pygame.quit()
 
 if __name__ == "__main__":
     try:
         main()
-    except:
-        pass
+    except KeyboardInterrupt:
+        print("Game interrupted by user.")
+        pygame.quit()
+    except Exception as e:
+        print(f"An error occurred: {e}")
