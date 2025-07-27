@@ -20,3 +20,7 @@ Adjust the SERIAL_PATH variable in `Game/utils/config.py`.
 Run the main.py file while the Arduino is connected.
 
 Additional config options in `Game/utils/config.py`.
+
+### Demos
+[![Watch the Demo Video](https://img.youtube.com/vi/BHG4vx1beZA/hqdefault.jpg)](https://www.youtube.com/watch?v=BHG4vx1beZA)
+
