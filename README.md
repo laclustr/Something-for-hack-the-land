@@ -1,4 +1,4 @@
-Welcome to Slappy-Bird, a cool twist on one of your favorite games. Adding a multitude of sensors, you can make it feel like you're playing the game in real life.
+Welcome to Slappy-Bird, a cool twist on one of your favorite games. Rather than control the bird using a standard keyboard, the bird jumps by slapping an accelerometer back and forth. The game also features a two player mode and persistent high scores.
 
 Configure the following ports on your arduino:
 ```
@@ -13,7 +13,7 @@ Configure the following ports on your arduino:
     I2C.. - BMP Air Pressure Sensor
 ```
 
-Compile the Controls folder and send to your Arduino using a tool such as PIO.
+Run this command `platformio run --target upload --upload-port /dev/cu.usbserial-0001` (change `/dev/cu.usbserial-0001` to the correct port).
 
 Adjust the SERIAL_PATH variable in `Game/utils/config.py`.
 
